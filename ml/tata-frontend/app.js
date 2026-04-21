@@ -168,7 +168,8 @@ async function apiCall(endpoint, method = 'GET', body = null) {
   try {
     const opts = { method, headers: { 'Content-Type': 'application/json' } };
     if (body) opts.body = JSON.stringify(body);
-    const res = await fetch(API_BASE + endpoint, opts);
+    const cleanedBase = API_BASE.replace(/\/+$/, ''); // Remove accidental trailing slashes from env variables
+    const res = await fetch(cleanedBase + endpoint, opts);
     return await res.json();
   } catch (e) {
     console.warn('API error:', e);
