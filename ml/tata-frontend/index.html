@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Tata Motors — Sales Intelligence Platform</title>
+<meta name="description" content="ML-powered sales forecasting, threat analysis and business intelligence for Tata Motors across 7 global markets. GBR model with R²=0.9988."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════ SIDEBAR ═══════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+
+  <!-- Logo Strip -->
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="tm-emblem">TM</div>
+      <div class="sidebar-brand">
+        <span class="brand-main">TATA MOTORS</span>
+        <span class="brand-sub">Intelligence Platform</span>
+      </div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="sidebar-search">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="globalSearch" placeholder="Search features…" autocomplete="off"/>
+  </div>
+
+  <!-- Nav -->
+  <nav class="sidebar-nav">
+
+    <!-- Overview -->
+    <div class="nav-item active" data-section="overview">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Overview</span>
+    </div>
+
+    <!-- FEATURE SELECTION -->
+    <div class="nav-category">
+      <span>Feature Selection</span>
+    </div>
+
+    <div class="nav-item" data-section="filters">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      <span>Data Filters</span>
+    </div>
+    <div class="nav-item" data-section="segment">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Customer Segments</span>
+    </div>
+    <div class="nav-item" data-section="models-grid">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span>Car Models</span>
+    </div>
+
+    <!-- FORECASTING ENGINE -->
+    <div class="nav-category">
+      <span>Forecasting Engine</span>
+    </div>
+
+    <div class="nav-item" data-section="historical">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Historical Performance</span>
+    </div>
+    <div class="nav-item" data-section="forecast">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Sales Forecast</span>
+      <span class="nav-badge">ML</span>
+    </div>
+    <div class="nav-item" data-section="worldmap">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span>World Map</span>
+    </div>
+    <div class="nav-item" data-section="whatif">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>What-If Simulator</span>
+    </div>
+    <div class="nav-item" data-section="compare">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      <span>Compare Markets</span>
+    </div>
+    <div class="nav-item" data-section="elasticity">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      <span>Price Elasticity</span>
+    </div>
+    <div class="nav-item" data-section="goal">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span>Goal Tracker</span>
+    </div>
+
+    <!-- THREAT ANALYSIS -->
+    <div class="nav-category">
+      <span>Threat Analysis</span>
+    </div>
+
+    <div class="nav-item" data-section="threats">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Threat Dashboard</span>
+      <span class="nav-badge danger">3</span>
+    </div>
+    <div class="nav-item" data-section="anomalies">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span>Anomaly Detection</span>
+    </div>
+    <div class="nav-item" data-section="model-perf">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      <span>Model Performance</span>
+    </div>
+    <div class="nav-item" data-section="methodology">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span>Methodology</span>
+    </div>
+
+  </nav>
+
+  <!-- Sidebar Footer -->
+  <div class="sidebar-footer">
+    <div class="assoc-label">In association with</div>
+    <div class="assoc-logos">
+      <div class="assoc-logo-item" title="Invertis University Bareilly">
+        <img src="invertis-small.webp" alt="Invertis University" style="height: 20px; width: auto; object-fit: contain;"/>
+        <span>Invertis University</span>
+      </div>
+      <div class="assoc-logo-item" title="DUCAT School of AI">
+        <img src="ducat-logo.webp" alt="DUCAT" style="height: 18px; width: auto; object-fit: contain; margin-right: 6px;"/>
+        <span>DUCAT School of AI</span>
+      </div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+<div class="main-wrapper" id="mainWrapper">
+
+  <!-- TOP HEADER -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="tata-logo-wrap">
+        <div class="tata-wordmark">TATA MOTORS</div>
+        <div class="platform-tag">Sales Intelligence Platform</div>
+      </div>
+    </div>
+    <div class="header-center">
+      <div class="search-bar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search anything — country, model, metric…" id="headerSearch"/>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <div class="header-sponsor-logos">
+        <div class="sponsor-chip" title="Invertis University Bareilly">IU</div>
+        <div class="sponsor-chip ducat-chip" title="DUCAT School of AI">DAI</div>
+      </div>
+      <div class="api-status" id="apiStatus">
+        <span class="status-dot"></span>
+        <span id="apiStatusText">Connecting…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ══════════ CONTENT AREA ══════════ -->
+  <main class="content-area">
+
+    <!-- ── OVERVIEW ── -->
+    <section id="sec-overview" class="section active">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Overview</h1>
+          <p class="section-sub">Global performance snapshot — real-time from ML model</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-export" onclick="exportPDF()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-row" id="kpiRow">
+        <div class="kpi-card" data-delay="0">
+          <div class="kpi-icon revenue-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Total Revenue (2024)</div>
+            <div class="kpi-value" id="kpiRevenue">—</div>
+            <div class="kpi-delta" id="kpiRevDelta">—</div>
+          </div>
+          <div class="kpi-ring" id="ringRevenue"></div>
+        </div>
+        <div class="kpi-card" data-delay="1">
+          <div class="kpi-icon profit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Total Profit (2024)</div>
+            <div class="kpi-value" id="kpiProfit">—</div>
+            <div class="kpi-delta" id="kpiProfitDelta">—</div>
+          </div>
+        </div>
+        <div class="kpi-card" data-delay="2">
+          <div class="kpi-icon units-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Units Sold (2024)</div>
+            <div class="kpi-value" id="kpiUnits">—</div>
+            <div class="kpi-delta neutral">Across 7 markets</div>
+          </div>
+        </div>
+        <div class="kpi-card" data-delay="3">
+          <div class="kpi-icon margin-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Avg Profit Margin</div>
+            <div class="kpi-value" id="kpiMargin">—</div>
+            <div class="kpi-delta" id="kpiMarginDelta">—</div>
+          </div>
+        </div>
+        <div class="kpi-card" data-delay="4">
+          <div class="kpi-icon forecast-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Forecast 2025 (India)</div>
+            <div class="kpi-value" id="kpiForecast">—</div>
+            <div class="kpi-delta positive">ML Prediction</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overview Charts -->
+      <div class="chart-grid-2">
+        <div class="glass-card">
+          <div class="card-header">
+            <h3>Revenue & Profit Trend</h3>
+            <div class="time-toggle" id="overviewTimeToggle">
+              <button class="tt-btn active" data-years="10">10Y</button>
+              <button class="tt-btn" data-years="5">5Y</button>
+              <button class="tt-btn" data-years="2">2Y</button>
+            </div>
+          </div>
+          <canvas id="chartOverviewRevenue" height="220"></canvas>
+        </div>
+        <div class="glass-card">
+          <div class="card-header"><h3>Market Distribution</h3></div>
+          <canvas id="chartCountryDonut" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-grid-3">
+        <div class="glass-card">
+          <div class="card-header"><h3>Fuel Type Portfolio</h3></div>
+          <canvas id="chartFuelDonut" height="180"></canvas>
+        </div>
+        <div class="glass-card">
+          <div class="card-header"><h3>Sales Channel Mix</h3></div>
+          <canvas id="chartChannelDonut" height="180"></canvas>
+        </div>
+        <div class="glass-card">
+          <div class="card-header"><h3>Top 5 Models (Revenue)</h3></div>
+          <canvas id="chartTopModels" height="180"></canvas>
+        </div>
+      </div>
+
+      <!-- Top Performers Leaderboard -->
+      <div class="glass-card">
+        <div class="card-header">
+          <h3>🏆 Top Performers Leaderboard</h3>
+        </div>
+        <div id="leaderboardContainer" class="leaderboard-grid"></div>
+      </div>
+    </section>
+
+    <!-- ── HISTORICAL PERFORMANCE ── -->
+    <section id="sec-historical" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Historical Performance</h1>
+          <p class="section-sub">10 years of Tata Motors sales data — 2015 to 2024</p>
+        </div>
+        <div class="time-toggle" id="histTimeToggle">
+          <button class="tt-btn active" data-years="10">10Y</button>
+          <button class="tt-btn" data-years="5">5Y</button>
+          <button class="tt-btn" data-years="2">2Y</button>
+        </div>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="glass-card">
+          <div class="card-header"><h3>Annual Revenue ($B)</h3></div>
+          <canvas id="chartHistRevenue" height="240"></canvas>
+        </div>
+        <div class="glass-card">
+          <div class="card-header"><h3>Annual Profit ($B)</h3></div>
+          <canvas id="chartHistProfit" height="240"></canvas>
+        </div>
+      </div>
+      <div class="chart-grid-2">
+        <div class="glass-card">
+          <div class="card-header"><h3>Units Sold (Millions)</h3></div>
+          <canvas id="chartHistUnits" height="240"></canvas>
+        </div>
+        <div class="glass-card">
+          <div class="card-header"><h3>Profit Margin % Trend</h3></div>
+          <canvas id="chartHistMargin" height="240"></canvas>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-header">
+          <h3>Revenue by Country — All Years</h3>
+          <div class="country-filter" id="histCountryFilter"></div>
+        </div>
+        <canvas id="chartHistCountry" height="260"></canvas>
+      </div>
+    </section>
+
+    <!-- ── FORECAST ── -->
+    <section id="sec-forecast" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Sales Forecast</h1>
+          <p class="section-sub">ML-powered predictions with confidence intervals — GBR model (R²=0.9953)</p>
+        </div>
+        <div class="forecast-controls">
+          <select id="fcCountry" class="glass-select">
+            <option value="India">India</option>
+            <option value="USA">USA</option>
+            <option value="Germany">Germany</option>
+            <option value="UK">UK</option>
+            <option value="Australia">Australia</option>
+            <option value="France">France</option>
+            <option value="Japan">Japan</option>
+          </select>
+          <div class="time-toggle" id="fcTimeToggle">
+            <button class="tt-btn active" data-years="5">5Y</button>
+            <button class="tt-btn" data-years="10">10Y</button>
+            <button class="tt-btn" data-years="1">1Y</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-row" id="fcKpiRow">
+        <div class="kpi-card small"><div class="kpi-label">2025 Revenue</div><div class="kpi-value small" id="fcRev2025">—</div></div>
+        <div class="kpi-card small"><div class="kpi-label">Peak Year Revenue</div><div class="kpi-value small" id="fcRevPeak">—</div></div>
+        <div class="kpi-card small"><div class="kpi-label">CAGR (Forecast)</div><div class="kpi-value small" id="fcCAGR">—</div></div>
+        <div class="kpi-card small"><div class="kpi-label">Model Confidence</div><div class="kpi-value small positive">R² 0.9953</div></div>
+      </div>
+
+      <div class="glass-card">
+        <div class="card-header"><h3 id="fcChartTitle">Revenue Forecast with Confidence Bands</h3></div>
+        <canvas id="chartForecastMain" height="300"></canvas>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="glass-card">
+          <div class="card-header"><h3>All Countries — 5Y Forecast ($M)</h3></div>
+          <canvas id="chartForecastAllCountries" height="260"></canvas>
+        </div>
+        <div class="glass-card">
+          <div class="card-header"><h3>Profit Forecast</h3></div>
+          <canvas id="chartForecastProfit" height="260"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WORLD MAP ── -->
+    <section id="sec-worldmap" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">World Map</h1>
+          <p class="section-sub">Revenue intensity across 7 markets — click a country to drill down</p>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-header"><h3>Global Revenue Heatmap (2025 Forecast)</h3></div>
+        <div id="worldMapContainer" class="world-map-container"></div>
+      </div>
+      <div class="chart-grid-2" style="margin-top:18px">
+        <div class="glass-card">
+          <div class="card-header"><h3>Country Revenue Ranking</h3></div>
+          <canvas id="chartCountryRank" height="260"></canvas>
+        </div>
+        <div class="glass-card">
+          <div class="card-header"><h3>Historical vs Forecast by Country</h3></div>
+          <canvas id="chartCountryCompare" height="260"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WHAT-IF SIMULATOR ── -->
+    <section id="sec-whatif" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">What-If Simulator</h1>
+          <p class="section-sub">Adjust business levers — model recalculates revenue impact instantly</p>
+        </div>
+      </div>
+      <div class="whatif-layout">
+        <div class="glass-card whatif-controls">
+          <div class="card-header"><h3>Adjust Levers</h3></div>
+          <div class="lever-group">
+            <label>Country</label>
+            <select id="wiCountry" class="glass-select full">
+              <option>India</option><option>USA</option><option>Germany</option>
+              <option>UK</option><option>Australia</option><option>France</option><option>Japan</option>
+            </select>
+          </div>
+          <div class="lever-group">
+            <label>Forecast Year</label>
+            <select id="wiYear" class="glass-select full">
+              <option>2025</option><option>2026</option><option>2027</option>
+              <option>2028</option><option>2029</option><option>2030</option>
+            </select>
+          </div>
+          <div class="lever-group">
+            <label>Cost Ratio Change <span id="wiCostVal" class="lever-val">0%</span></label>
+            <input type="range" id="wiCost" min="-20" max="20" value="0" class="lever-slider"/>
+          </div>
+          <div class="lever-group">
+            <label>R&D Spend Change <span id="wiRndVal" class="lever-val">0%</span></label>
+            <input type="range" id="wiRnd" min="-20" max="20" value="0" class="lever-slider"/>
+          </div>
+          <div class="lever-group">
+            <label>Marketing Change <span id="wiMktVal" class="lever-val">0%</span></label>
+            <input type="range" id="wiMkt" min="-20" max="20" value="0" class="lever-slider"/>
+          </div>
+          <div class="lever-group">
+            <label>Units Sold Change <span id="wiUnitsVal" class="lever-val">0%</span></label>
+            <input type="range" id="wiUnits" min="-30" max="30" value="0" class="lever-slider"/>
+          </div>
+          <button class="btn-primary full" id="wiRunBtn" onclick="runWhatIf()">Run Simulation</button>
+          <button class="btn-ghost full" onclick="resetWhatIf()">Reset</button>
+        </div>
+        <div class="whatif-results">
+          <div class="glass-card">
+            <div class="card-header"><h3>Simulation Result</h3></div>
+            <div id="wiResult" class="wi-result-placeholder">Adjust levers and click Run Simulation</div>
+          </div>
+          <div class="glass-card" style="margin-top:18px">
+            <div class="card-header"><h3>Revenue Impact Breakdown</h3></div>
+            <canvas id="chartWiResult" height="220"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COMPARE ── -->
+    <section id="sec-compare" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Compare Markets</h1>
+          <p class="section-sub">Side-by-side historical + forecast comparison</p>
+        </div>
+        <div class="compare-controls">
+          <select id="cmpA" class="glass-select"><option>India</option><option>USA</option><option>Germany</option><option>UK</option><option>Australia</option><option>France</option><option>Japan</option></select>
+          <span class="vs-badge">VS</span>
+          <select id="cmpB" class="glass-select"><option>Germany</option><option>India</option><option>USA</option><option>UK</option><option>Australia</option><option>France</option><option>Japan</option></select>
+          <button class="btn-primary" onclick="runCompare()">Compare</button>
+        </div>
+      </div>
+      <div class="glass-card">
+        <canvas id="chartCompare" height="300"></canvas>
+      </div>
+      <div class="chart-grid-2" style="margin-top:18px">
+        <div class="glass-card" id="cmpTableA"></div>
+        <div class="glass-card" id="cmpTableB"></div>
+      </div>
+    </section>
+
+    <!-- ── PRICE ELASTICITY ── -->
+    <section id="sec-elasticity" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Price Elasticity</h1>
+          <p class="section-sub">How price changes impact units sold and revenue</p>
+        </div>
+        <select id="elasCountry" class="glass-select">
+          <option>India</option><option>USA</option><option>Germany</option><option>UK</option><option>Australia</option><option>France</option><option>Japan</option>
+        </select>
+      </div>
+      <div class="glass-card">
+        <canvas id="chartElasticity" height="300"></canvas>
+      </div>
+      <div class="glass-card" style="margin-top:18px" id="elasticityTable"></div>
+    </section>
+
+    <!-- ── GOAL TRACKER ── -->
+    <section id="sec-goal" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Goal Tracker</h1>
+          <p class="section-sub">Set a revenue target — model calculates what levers to pull</p>
+        </div>
+      </div>
+      <div class="goal-layout">
+        <div class="glass-card goal-form">
+          <div class="card-header"><h3>Set Your Target</h3></div>
+          <div class="lever-group">
+            <label>Country</label>
+            <select id="goalCountry" class="glass-select full"><option>India</option><option>USA</option><option>Germany</option><option>UK</option><option>Australia</option><option>France</option><option>Japan</option></select>
+          </div>
+          <div class="lever-group">
+            <label>Target Year</label>
+            <select id="goalYear" class="glass-select full"><option>2025</option><option>2026</option><option>2027</option><option>2028</option></select>
+          </div>
+          <div class="lever-group">
+            <label>Target Revenue ($M)</label>
+            <input type="number" id="goalTarget" class="glass-input" placeholder="e.g. 350" value="350"/>
+          </div>
+          <button class="btn-primary full" onclick="runGoalTracker()">Calculate Gap</button>
+        </div>
+        <div class="goal-result glass-card" id="goalResult">
+          <div class="wi-result-placeholder">Set a target and click Calculate</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CUSTOMER SEGMENTS ── -->
+    <section id="sec-segment" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Customer Segments</h1>
+          <p class="section-sub">Predict likely buyer profile for any car + market combination</p>
+        </div>
+      </div>
+      <div class="segment-layout">
+        <div class="glass-card segment-form">
+          <div class="card-header"><h3>Configure</h3></div>
+          <div class="lever-group"><label>Country</label>
+            <select id="segCountry" class="glass-select full"><option>India</option><option>USA</option><option>Germany</option><option>UK</option><option>Australia</option><option>France</option><option>Japan</option></select></div>
+          <div class="lever-group"><label>Fuel Type</label>
+            <select id="segFuel" class="glass-select full"><option>Electric</option><option>Hybrid</option><option>Petrol</option><option>Diesel</option></select></div>
+          <div class="lever-group"><label>Car Type</label>
+            <select id="segCarType" class="glass-select full"><option>SUV</option><option>Sedan</option><option>Hatchback</option><option>MPV</option><option>Pickup</option></select></div>
+          <div class="lever-group"><label>Price (USD)</label>
+            <input type="number" id="segPrice" class="glass-input" value="25000"/></div>
+          <button class="btn-primary full" onclick="runSegment()">Predict Segment</button>
+        </div>
+        <div class="glass-card segment-result" id="segResult">
+          <div class="wi-result-placeholder">Configure and predict</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DATA FILTERS ── -->
+    <section id="sec-filters" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Data Filters</h1>
+          <p class="section-sub">Filter and explore all 50 car models and market data</p>
+        </div>
+      </div>
+      <div class="glass-card" style="margin-bottom:18px">
+        <div class="filters-row">
+          <div class="filter-group"><label>Fuel Type</label>
+            <select id="filterFuel" class="glass-select" onchange="applyFilters()">
+              <option value="">All</option><option>Electric</option><option>Hybrid</option><option>Diesel</option><option>Petrol</option>
+            </select></div>
+          <div class="filter-group"><label>Car Type</label>
+            <select id="filterType" class="glass-select" onchange="applyFilters()">
+              <option value="">All</option><option>SUV</option><option>Sedan</option><option>Hatchback</option><option>MPV</option><option>Pickup</option><option>Coupe</option>
+            </select></div>
+          <div class="filter-group"><label>Min Price ($)</label>
+            <input type="number" id="filterMinPrice" class="glass-input" placeholder="0" onchange="applyFilters()"/></div>
+          <div class="filter-group"><label>Max Price ($)</label>
+            <input type="number" id="filterMaxPrice" class="glass-input" placeholder="100000" onchange="applyFilters()"/></div>
+        </div>
+      </div>
+      <div id="modelsGrid" class="models-grid"></div>
+    </section>
+
+    <!-- ── CAR MODELS ── -->
+    <section id="sec-models-grid" class="section">
+      <div class="section-header">
+        <div><h1 class="section-title">Car Models</h1><p class="section-sub">Full catalogue — 50 models with specs and forecasts</p></div>
+      </div>
+      <div id="modelsGridFull" class="models-grid"></div>
+    </section>
+
+    <!-- ── THREATS ── -->
+    <section id="sec-threats" class="section">
+      <div class="section-header">
+        <div><h1 class="section-title">Threat Dashboard</h1><p class="section-sub">Business risk analysis — auto-generated from model trends</p></div>
+      </div>
+      <div class="threat-kpi-row">
+        <div class="threat-kpi high"><div class="tk-num">3</div><div class="tk-label">High Severity</div></div>
+        <div class="threat-kpi medium"><div class="tk-num">4</div><div class="tk-label">Medium Severity</div></div>
+        <div class="threat-kpi low"><div class="tk-num">3</div><div class="tk-label">Low Severity</div></div>
+        <div class="threat-kpi info"><div class="tk-num">2026</div><div class="tk-label">Primary Risk Horizon</div></div>
+      </div>
+      <div id="threatsContainer"></div>
+    </section>
+
+    <!-- ── ANOMALIES ── -->
+    <section id="sec-anomalies" class="section">
+      <div class="section-header">
+        <div><h1 class="section-title">Anomaly Detection</h1><p class="section-sub">Actual vs predicted deviations — flagged automatically</p></div>
+      </div>
+      <div class="glass-card">
+        <canvas id="chartAnomalies" height="300"></canvas>
+      </div>
+      <div class="glass-card" style="margin-top:18px" id="anomalyTable"></div>
+    </section>
+
+    <!-- ── MODEL PERFORMANCE ── -->
+    <section id="sec-model-perf" class="section">
+      <div class="section-header">
+        <div><h1 class="section-title">Model Performance</h1><p class="section-sub">GBR model accuracy metrics and feature importance</p></div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-label">R² Score</div><div class="kpi-value positive">0.9953</div><div class="kpi-delta">Revenue model</div></div>
+        <div class="kpi-card"><div class="kpi-label">MAE</div><div class="kpi-value">$5.36M</div><div class="kpi-delta">Mean absolute error</div></div>
+        <div class="kpi-card"><div class="kpi-label">MAPE</div><div class="kpi-value">8.45%</div><div class="kpi-delta">Mean abs % error</div></div>
+        <div class="kpi-card"><div class="kpi-label">CV R²</div><div class="kpi-value positive">0.9939</div><div class="kpi-delta">5-fold cross-val</div></div>
+      </div>
+      <div class="chart-grid-2">
+        <div class="glass-card">
+          <div class="card-header"><h3>Feature Importance</h3></div>
+          <canvas id="chartFeatureImp" height="280"></canvas>
+        </div>
+        <div class="glass-card">
+          <div class="card-header"><h3>Algorithm Comparison</h3></div>
+          <canvas id="chartModelComp" height="280"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── METHODOLOGY ── -->
+    <section id="sec-methodology" class="section">
+      <div class="section-header">
+        <div><h1 class="section-title">Methodology</h1><p class="section-sub">How the ML model works — data story and technical approach</p></div>
+      </div>
+      <div class="methodology-content" id="methodologyContent"></div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="footer-logos">
+      <div class="footer-tata">
+        <div class="tm-emblem small">TM</div>
+        <span>Tata Motors Sales Intelligence Platform</span>
+      </div>
+      <div class="footer-assoc" style="display: flex; gap: 15px; align-items: center;">
+        <span>In association with</span>
+        <img src="invertis-logo.webp" alt="Invertis University" style="height: 30px; width: auto; object-fit: contain;"/>
+        <span>&amp;</span>
+        <img src="ducat-logo.webp" alt="DUCAT School of AI" style="height: 30px; width: auto; object-fit: contain;"/>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <span>ML Model: Gradient Boosting Regressor · R² = 0.9953</span>
+      <span>·</span>
+      <span>250,000 records · 7 countries · 2015–2034</span>
+      <span>·</span>
+      <span>© 2026 Academic Project</span>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
