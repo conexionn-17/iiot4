@@ -95,18 +95,26 @@ class GoalRequest(BaseModel):
 
 @app.get("/health", tags=["System"])
 def health():
-    bundle  = load_bundle()
-    metrics = bundle.get("metrics", {})
-    return {
-        "status": "ok",
-        "uptime_seconds": round(time.time() - _start_time, 1),
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "model_r2_revenue": metrics.get("r2_revenue"),
-        "model_mae_revenue": metrics.get("mae_revenue"),
-        "model_mape_revenue": metrics.get("mape_revenue"),
-        "countries_supported": COUNTRIES,
-        "forecast_horizon": "2025–2034",
-    }
+    try:
+        bundle  = load_bundle()
+        metrics = bundle.get("metrics", {})
+        return {
+            "status": "ok",
+            "uptime_seconds": round(time.time() - _start_time, 1),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "model_r2_revenue": metrics.get("r2_revenue"),
+            "model_mae_revenue": metrics.get("mae_revenue"),
+            "model_mape_revenue": metrics.get("mape_revenue"),
+            "countries_supported": COUNTRIES,
+            "forecast_horizon": "2025–2034",
+        }
+    except Exception as e:
+        import traceback
+        return {
+            "status": "error",
+            "detail": str(e),
+            "traceback": traceback.format_exc()
+        }
 
 
 @app.get("/summary", tags=["Overview"])
