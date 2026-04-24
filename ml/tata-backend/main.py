@@ -350,6 +350,25 @@ def what_if(req: WhatIfRequest):
     delta    = pred - base_pred
     delta_pct= (delta / base_pred) * 100
 
+    # Profit calculations
+    base_margin = 0.175
+    base_profit = base_pred * base_margin
+    
+    base_cost_ratio = 1 - base_margin
+    adj_cost_ratio = base_cost_ratio * (1 + req.cost_ratio_delta / 100)
+    adj_margin = 1 - adj_cost_ratio
+    
+    # The new profit includes the margin on the new revenue, minus extra investments
+    extra_mkt = mkt - 5000.0
+    extra_rnd = rnd - 8500.0
+    investment_delta = extra_mkt + extra_rnd
+    
+    adjusted_profit = (pred * adj_margin) - investment_delta
+    profit_delta = adjusted_profit - base_profit
+    profit_delta_pct = (profit_delta / base_profit) * 100 if base_profit != 0 else 0
+    
+    roi_multiplier = profit_delta / investment_delta if investment_delta > 0 else 0.0
+
     return {
         "country":          req.country,
         "year":             req.year,
@@ -357,6 +376,12 @@ def what_if(req: WhatIfRequest):
         "adjusted_revenue": round(pred, 2),
         "delta":            round(delta, 2),
         "delta_pct":        round(delta_pct, 2),
+        "baseline_profit":  round(base_profit, 2),
+        "adjusted_profit":  round(adjusted_profit, 2),
+        "profit_delta":     round(profit_delta, 2),
+        "profit_delta_pct": round(profit_delta_pct, 2),
+        "adjusted_margin_pct": round(adj_margin * 100, 2),
+        "roi_multiplier":   round(roi_multiplier, 1),
         "levers_applied": {
             "cost_ratio_delta":    req.cost_ratio_delta,
             "rnd_delta":           req.rnd_delta,
@@ -430,8 +455,10 @@ def get_models(
     car_type:  Optional[str] = None,
     min_price: Optional[float] = None,
     max_price: Optional[float] = None,
+    sort_by:   Optional[str] = Query(None, description="price_usd | horsepower | engine_cc | safety_rating"),
+    sort_order: Optional[str] = Query("asc", description="asc | desc"),
 ):
-    """Return car model specs with optional filters."""
+    """Return car model specs with optional filters and sort."""
     data = SPECS.copy()
     if fuel_type:
         data = [m for m in data if m.get("fuel_type", "").lower() == fuel_type.lower()]
@@ -441,7 +468,76 @@ def get_models(
         data = [m for m in data if float(m.get("price_usd", 0)) >= min_price]
     if max_price is not None:
         data = [m for m in data if float(m.get("price_usd", 0)) <= max_price]
+    if sort_by and sort_by in ["price_usd", "horsepower", "engine_cc", "safety_rating"]:
+        reverse = sort_order == "desc"
+        data = sorted(data, key=lambda x: float(x.get(sort_by, 0) or 0), reverse=reverse)
     return {"count": len(data), "models": data}
+
+
+@app.get("/model-sales", tags=["Data"])
+def model_sales(
+    country: Optional[str] = Query(None, description="Filter by country"),
+    sort_by: Optional[str] = Query("total_revenue", description="total_revenue | units_sold | profit"),
+    sort_order: Optional[str] = Query("desc", description="asc | desc"),
+):
+    """Per-model sales cards with specs, filterable by country."""
+    fp = os.path.join(os.path.dirname(__file__), "..", "..", "TATA", "tata_car_finance.csv")
+    try:
+        df_all = pd.read_csv(fp)
+    except Exception:
+        raise HTTPException(500, "Finance dataset not found")
+
+    df = df_all[df_all["country"] == country] if country else df_all.copy()
+
+    agg = df.groupby("model_id").agg(
+        units_sold=("units_sold", "sum"),
+        total_revenue=("total_revenue", "sum"),
+        profit=("profit", "sum"),
+        avg_revenue_per_unit=("revenue_per_unit", "mean"),
+        avg_margin_pct=("average_profit_margin_pct", "mean"),
+        min_price=("min_price", "mean"),
+        max_price=("max_price", "mean"),
+    ).reset_index()
+
+    if sort_by in ["total_revenue", "units_sold", "profit"]:
+        agg = agg.sort_values(sort_by, ascending=(sort_order == "asc"))
+
+    specs_map = {s["model_id"]: s for s in SPECS}
+    cards = []
+    for _, row in agg.iterrows():
+        mid = int(row["model_id"])
+        spec = specs_map.get(mid, {})
+        cards.append({
+            "model_id": mid,
+            "car_model": spec.get("car_model", f"Model #{mid}"),
+            "car_type": spec.get("car_type", ""),
+            "fuel_type": spec.get("fuel_type", ""),
+            "drivetrain": spec.get("drivetrain", "FWD"),
+            "horsepower": spec.get("horsepower"),
+            "engine_cc": spec.get("engine_cc"),
+            "safety_rating": spec.get("safety_rating"),
+            "transmission": spec.get("transmission", ""),
+            "units_sold": int(round(row["units_sold"])),
+            "total_revenue": round(float(row["total_revenue"]), 2),
+            "profit": round(float(row["profit"]), 2),
+            "avg_revenue_per_unit": round(float(row["avg_revenue_per_unit"]), 2),
+            "avg_margin_pct": round(float(row["avg_margin_pct"]), 2),
+            "min_price": round(float(row["min_price"]), 2),
+            "max_price": round(float(row["max_price"]), 2),
+        })
+
+    ctot = df_all.groupby("country")["units_sold"].sum().sort_values(ascending=False).reset_index()
+    ctot.columns = ["country", "total_units"]
+    ctot["total_units"] = ctot["total_units"].round(0).astype(int)
+
+    return {
+        "country_filter": country or "All",
+        "grand_total_units": int(df_all["units_sold"].sum()),
+        "card_count": len(cards),
+        "cards": cards,
+        "country_totals": ctot.to_dict(orient="records"),
+    }
+
 
 
 @app.get("/compare", tags=["Analysis"])

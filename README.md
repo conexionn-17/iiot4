@@ -1,6 +1,6 @@
 # Tata Motors Sales Intelligence Platform
 
-![Tata Motors Platform](https://img.shields.io/badge/Status-Completed-success) ![Machine Learning](https://img.shields.io/badge/ML-Gradient_Boosting_Regressor-blue) ![Backend](https://img.shields.io/badge/Backend-FastAPI-teal) ![Frontend](https://img.shields.io/badge/Frontend-Vanilla_JS-amber)
+![Tata Motors Platform](https://img.shields.io/badge/Status-Completed-success) ![Machine Learning](https://img.shields.io/badge/ML-Gradient_Boosting_Regressor-blue) ![Backend](https://img.shields.io/badge/Backend-FastAPI-teal) ![Frontend](https://img.shields.io/badge/Frontend-React%2FVite-blue)
 
 An advanced, machine-learning-powered sales and business intelligence dashboard designed for Tata Motors. This tool operationalizes historical sales data across 7 global markets (2015-2024) to predict revenue, forecast growth targets, detect market anomalies, and evaluate product-level price elasticity.
 
@@ -38,10 +38,10 @@ A High-performance API built with **FastAPI** wrapping the serialized Scikit-Lea
     *   `POST /goal-tracker`: Gap analysis and lever requirement generator.
     *   `POST /segment-predict`: Outputs customer segmentation profiles.
 
-### 2. Frontend (`/ml/tata-frontend`)
-A modern, responsive UI built with the **Stitch Design System**, rendering data asynchronously without frontend frameworks.
-*   **Technologies**: Vanilla HTML/CSS, JavaScript (ES6), Chart.js.
-*   **Features**: Asynchronous `fetch` calls dynamically populating cards and charts, dark/light theme implementations, and a dynamic sidebar state manager. 
+### 2. Frontend (`/ml/tata-frontend-v2`)
+A modern, responsive UI built with **React** and **Vite**, featuring a premium dark theme ("Tata Dark").
+*   **Technologies**: React, Vite, Tailwind CSS, Recharts.
+*   **Features**: Asynchronous API integration, advanced visualizations, profit/ROI simulations, and interactive what-if scenarios.
 
 ## Local Setup Instructions
 
@@ -60,18 +60,21 @@ A modern, responsive UI built with the **Stitch Design System**, rendering data 
    ```
 
 ### Frontend
-1. The frontend operates via static files. You can serve them using any HTTP server.
-2. Navigate to the frontend directory:
+1. Navigate to the frontend directory:
    ```bash
-   cd "ml/tata-frontend"
+   cd "ml/tata-frontend-v2"
    ```
-3. Run a quick local server (for example, with Python):
+2. Install Node dependencies:
    ```bash
-   python -m http.server 3000
+   npm install
    ```
-4. Access the dashboard at `http://localhost:3000`.
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+4. Access the dashboard at `http://localhost:5173`.
 
-> **Note on Configuration**: To point the dashboard to a local backend instead of the Render deployment, update `API_BASE` in `ml/tata-frontend/app.js` to `http://localhost:8000` and ensure `USE_MOCK = false;`.
+> **Note on Configuration**: The frontend expects the backend to run on `http://localhost:8000`. You can change this in `ml/tata-frontend-v2/src/services/api.js` if necessary.
 
 ## Academic Contributions
 This full-stack system was conceptualized and completed as a capstone project under the guidance of our institutional sponsors:
